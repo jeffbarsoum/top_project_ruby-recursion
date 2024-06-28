@@ -3,6 +3,7 @@ def factorial(n)
   n * factorial(n - 1)
 end
 
+
 def palindrome(str)
   return true if str.nil? || str.length == 1
   ends_equal = str[0] == str[-1]
