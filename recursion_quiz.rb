@@ -64,6 +64,39 @@ def int_to_roman(int)
   result
 end
 
+def roman_to_int(roman)
+  roman_mapping = {
+    "M" => 1000,
+    "CM" => 900,
+    "D" => 500,
+    "CD" => 400,
+    "C" => 100,
+    "XC" => 90,
+    "L" => 50,
+    "XL" => 40,
+    "X" => 10,
+    "IX" => 9,
+    "V" => 5,
+    "IV" => 4,
+    "I" => 1
+  }
+  result = 0
+  return result if roman == ""
+  return roman_mapping[roman] if roman_mapping.key?(result)
+  roman_mapping.each do |k, v|
+    rom_arr = [roman[0..1], roman[0]]
+    int = nil
+    rom_arr.each { |rom| int = roman_mapping[rom] if roman_mapping.key?(rom) && int.nil?  }
+    next unless int > 0
+    new_rom = roman.slice!(roman_mapping.key(int).length, roman.length - 1)
+    result += int
+    result += roman_to_int(new_rom)
+    break if int > 0
+  end
+  # p "result: #{result}"
+  result
+end
+
 def merge_sort(array)
   return array if array.length == 1
   array_a = array[0..array.length/2]
@@ -77,4 +110,5 @@ def merge_sort(array)
 end
 
 int_to_roman 2572
+roman_to_int "MMDLXXII"
 # merge_sort([2,3,5,4,2])
