@@ -23,11 +23,13 @@ def fibonacci(n)
 end
 
 def flatten(array)
-  return array if array.is_a?(Array) && !array[0].is_a?(Array) && array.length == 1
-  flattened = []
-  array.each do |element|
-    flattened << array.shift unless element.is_a?(Array)
-    flatten(array.shift) if element.is_a?(Array)
+  return array unless array.is_a?(Array)
+  array.length.times do |i|
+    if array[i].is_a?(Array)
+      element = array.slice!(i)
+      element.length.times { |j| array.insert(i, element.pop) }
+      flatten(array)
+    end
   end
-  flattened
+  array
 end
