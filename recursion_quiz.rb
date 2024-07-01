@@ -113,22 +113,42 @@ end
 
 def merge_sort(array)
   result = []
-  return result += array if array.length == 1
+  return array if array.length == 1
   divider = (array.length - 1)/2
   a = array[0..divider]
   b = array[divider + 1..-1]
 
   a_sort = merge_sort(a)
   b_sort = merge_sort(b)
-  until a_sort.empty? && b_sort.empty? do
-    sort = [a_sort.shift, b_sort.shift].compact
-    sort.push(sort.shift) if sort.length == 2 && sort[0] >= sort[1]
-    result += sort
+  result = merge(a_sort, b_sort)
+  p "result: #{result}"
+  result
+end
+
+def merge(arr_a, arr_b)
+  result = []
+  until arr_a.empty? && arr_b.empty? do
+    compare = result[-1]
+    result << arr_a.shift if !arr_a.empty? && (arr_b.empty? || arr_a[0] <= arr_b[0])
+    result << arr_b.shift if !arr_b.empty? && (arr_a.empty? || arr_b[0] <= arr_a[0])
   end
+  p "result: #{result}"
+  result
+end
+
+def fibonacci2(n)
+  result = []
+  return result = [0] + result if n == 0
+  return result = [0,1] + result if n == 1
+  (n-2).times { |i| result.unshift(fibonacci(n - i - 1) + fibonacci(n - i - 2)) }
+  result.unshift(1) if n >= 1
+  result.unshift(0) if n >= 0
   p "result: #{result}"
   result
 end
 
 # int_to_roman 2572
 # roman_to_int "MMDLXXII"
-merge_sort([2,3,5,4,2])
+# merge_sort([2,3,17,5,4,2,1])
+fibonacci2(1)
+# merge([2,3,4,5,10],[1,2,4,15])
