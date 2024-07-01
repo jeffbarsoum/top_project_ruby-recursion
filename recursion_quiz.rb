@@ -113,22 +113,19 @@ end
 
 def merge_sort(array)
   result = []
-  if array.length == 1
-    result += array
-    return result
-  end
-  return [] if array.nil?
+  return result += array if array.length == 1
   divider = (array.length - 1)/2
   a = array[0..divider]
   b = array[divider + 1..-1]
-  a_sort = merge_sort(a) unless a.length == 1
-  b_sort = merge_sort(b) unless b.length == 1
-  until a.empty? && b.empty? do
+
+  a_sort = merge_sort(a)
+  b_sort = merge_sort(b)
+  until a_sort.empty? && b_sort.empty? do
     sort = [a_sort.shift, b_sort.shift].compact
-    result.push(sort.shift) if sort[1].nil?
-    result.push(sort.pop)
-    result.push(sort.shift) unless sort[0].nil?
+    sort.push(sort.shift) if sort.length == 2 && sort[0] >= sort[1]
+    result += sort
   end
+  p "result: #{result}"
   result
 end
 
