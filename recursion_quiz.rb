@@ -93,22 +93,45 @@ def roman_to_int(roman)
     result += roman_to_int(new_rom)
     break if int > 0
   end
-  # p "result: #{result}"
   result
 end
 
-def merge_sort(array)
+def divide_sort(array)
   return array if array.length == 1
-  array_a = array[0..array.length/2]
-  array_b = array[array.length/2 + 1..array.length-1]
-  sort_a = merge_sort(array_a)
-  sort_b = merge_sort(array_b)
-  p "sort_a: #{sort_a}"
-  p "sort_b: #{sort_b}"
-  return sort_a + sort_b if sort_a[0] <= sort_b[0]
-  return sort_b + sort_a if sort_b[0] <= sort_a[0]
+  a = array[0..array.length/2]
+  b = array[array.length/2 + 1..array.length-1]
+  merged = []
+  until a.length + b.length == 0 do
+    merged << a.shift if !a[0].nil? && (b[0].nil? || a[0] <= b[0])
+    merged << b.shift if !b[0].nil? && (a[0].nil? || b[0] < a[0])
+  end
+  p "a: #{a}"
+  p "b: #{b}"
+  p "merged: #{merged}"
+  # merged += merge_sort(merged)
 end
 
-int_to_roman 2572
-roman_to_int "MMDLXXII"
-# merge_sort([2,3,5,4,2])
+def merge_sort(array)
+  result = []
+  if array.length == 1
+    result += array
+    return result
+  end
+  return [] if array.nil?
+  divider = (array.length - 1)/2
+  a = array[0..divider]
+  b = array[divider + 1..-1]
+  a_sort = merge_sort(a) unless a.length == 1
+  b_sort = merge_sort(b) unless b.length == 1
+  until a.empty? && b.empty? do
+    sort = [a_sort.shift, b_sort.shift].compact
+    result.push(sort.shift) if sort[1].nil?
+    result.push(sort.pop)
+    result.push(sort.shift) unless sort[0].nil?
+  end
+  result
+end
+
+# int_to_roman 2572
+# roman_to_int "MMDLXXII"
+merge_sort([2,3,5,4,2])
